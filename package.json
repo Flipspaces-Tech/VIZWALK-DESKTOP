@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder",
-    "release": "git add . && git commit -m \"$npm_config_msg\" && git push && npm run publish"
+    "release": "git add . && git commit -m \"%npm_config_msg\" && git push && npm run publish"
   },
   "dependencies": {
     "electron-log": "^5.4.3",
