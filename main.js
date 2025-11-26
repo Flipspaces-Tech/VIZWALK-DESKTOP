@@ -1,4 +1,5 @@
 // main.js
+// TEST
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const log = require("electron-log");
