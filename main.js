@@ -101,9 +101,15 @@ function startStaticServer(callback) {
  * Create the main BrowserWindow and load the given URL
  */
 function createWindow(rootUrl) {
+  // 🔹 Icon path: dev vs packaged
+  const iconPath = app.isPackaged
+    ? path.join(process.resourcesPath, "icon.ico") // after build
+    : path.join(__dirname, "icon", "icon.ico");    // during dev
+
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 800,
+    icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
