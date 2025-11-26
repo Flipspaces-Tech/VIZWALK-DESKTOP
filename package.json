@@ -1,12 +1,13 @@
 {
   "name": "vizwalk-desktop",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Vizwalk Desktop App",
   "author": "You",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "release": "git add . && git commit -m \"$npm_config_msg\" && git push && npm run publish"
   },
   "dependencies": {
     "electron-log": "^5.4.3",
