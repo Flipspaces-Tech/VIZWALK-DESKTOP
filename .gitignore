@@ -1,6 +1,9 @@
 node_modules/
 dist/
 app-build/
+
+s3/
+s4/
 .DS_Store
 
 # Logs
