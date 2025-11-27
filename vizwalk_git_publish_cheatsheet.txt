@@ -1,0 +1,79 @@
+VIZWALK DESKTOP — GIT & PUBLISHING COMMANDS CHEATSHEET
+========================================================
+
+GIT COMMANDS YOU NEED
+---------------------
+1. Initialize repository (only once)
+   git init
+
+2. Add all files
+   git add .
+
+3. Commit changes
+   git commit -m "message"
+
+4. Push to GitHub
+   git push
+
+5. Pull updates
+   git pull
+
+6. Check status
+   git status
+
+7. View commit history
+   git log --oneline
+
+8. Undo last commit (keep changes)
+   git reset --soft HEAD~1
+
+9. Reset to clean state (delete changes)
+   git reset --hard
+
+
+ELECTRON BUILDER + AUTO-PUBLISH WORKFLOW
+----------------------------------------
+MOST IMPORTANT COMMAND (Build + Publish):
+   npm run dist -- --publish always
+
+Build without publishing:
+   npm run dist
+
+Only publish on Git tag:
+   npm run dist -- --publish onTag
+
+Bump version automatically:
+   npm version patch
+
+
+RELEASE MANAGEMENT
+------------------
+Create tag manually:
+   git tag v1.0.7
+   git push origin v1.0.7
+
+Delete local branch:
+   git branch -d feature/vlc-support
+
+Delete remote branch:
+   git push origin --delete feature/vlc-support
+
+
+DAILY WORKFLOW (USE THIS EVERY TIME)
+------------------------------------
+1. Make code changes
+
+2. Commit + push
+      git add .
+      git commit -m "Update"
+      git push
+
+3. Build & publish release
+   npm run dist -- --publish always
+
+4. Done! Users auto-update automatically.
+
+
+ONE-LINE FULL AUTOMATION
+------------------------
+git add . && git commit -m "auto" && git push && npm run dist -- --publish always
