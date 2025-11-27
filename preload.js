@@ -1,33 +1,39 @@
 // preload.js
 const { contextBridge, ipcRenderer } = require("electron");
 
-// APIs for renderer (React) to call Electron / listen to events
+// ========================================================
+// SINGLE EXPOSE BLOCK → Everything goes inside one object.
+// ========================================================
 contextBridge.exposeInMainWorld("electronAPI", {
-  // Launch Unreal exe
+  // ---- Launch Unreal EXE ----
   launchExe: (exePath) => ipcRenderer.invoke("launch-exe", exePath),
 
-  // ====== AUTO-UPDATE EVENTS (optional, for UI feedback) ======
-  onUpdateChecking: (callback) => {
-    ipcRenderer.on("update-checking", (_event, args) => callback(args));
-  },
-  onUpdateAvailable: (callback) => {
-    ipcRenderer.on("update-available", (_event, args) => callback(args));
-  },
-  onUpdateNotAvailable: (callback) => {
-    ipcRenderer.on("update-not-available", (_event, args) => callback(args));
-  },
-  onUpdateDownloaded: (callback) => {
-    ipcRenderer.on("update-downloaded", (_event, args) => callback(args));
-  },
-  onUpdateError: (callback) => {
-    ipcRenderer.on("update-error", (_event, args) => callback(args));
-  },
-  onDownloadProgress: (callback) => {
-    ipcRenderer.on("download-progress", (_event, args) => callback(args));
-  },
+  // ---- Open video in VLC ----
+  openInVLC: (filePath) => ipcRenderer.invoke("open-in-vlc", filePath),
+
+  // ---- Auto-updater event relays ----
+  onUpdateChecking: (cb) =>
+    ipcRenderer.on("update-checking", (_, data) => cb(data)),
+
+  onUpdateAvailable: (cb) =>
+    ipcRenderer.on("update-available", (_, data) => cb(data)),
+
+  onUpdateNotAvailable: (cb) =>
+    ipcRenderer.on("update-not-available", (_, data) => cb(data)),
+
+  onUpdateDownloaded: (cb) =>
+    ipcRenderer.on("update-downloaded", (_, data) => cb(data)),
+
+  onUpdateError: (cb) =>
+    ipcRenderer.on("update-error", (_, data) => cb(data)),
+
+  onDownloadProgress: (cb) =>
+    ipcRenderer.on("download-progress", (_, data) => cb(data)),
 });
 
-// Persistent project storage
+// ========================================================
+// Separate namespace for project storage
+// ========================================================
 contextBridge.exposeInMainWorld("vizwalkStorage", {
   loadProjects: () => ipcRenderer.invoke("load-projects"),
   saveProjects: (items) => ipcRenderer.invoke("save-projects", items),

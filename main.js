@@ -210,3 +210,51 @@ ipcMain.handle("launch-exe", (_event, exePath) => {
     console.error("Failed to launch exe:", exePath, err);
   }
 });
+
+
+
+
+// === OPEN VIDEO IN VLC ===
+ipcMain.handle("open-in-vlc", (_event, input) => {
+  try {
+    if (!input) {
+      console.log("No video path/URL passed to open-in-vlc");
+      return { ok: false, error: "No path" };
+    }
+
+    let videoArg = String(input).trim();
+
+    // If it's file:///C:/... convert to C:\...
+    if (/^file:\/\//i.test(videoArg)) {
+      videoArg = videoArg.replace(/^file:\/\/\//i, "");
+      videoArg = videoArg.replace(/\//g, "\\");
+    }
+
+    // VLC locations on Windows
+    const vlcPath1 = "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe";
+    const vlcPath2 = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe";
+
+    let vlcExe = null;
+    if (fs.existsSync(vlcPath1)) vlcExe = vlcPath1;
+    else if (fs.existsSync(vlcPath2)) vlcExe = vlcPath2;
+
+    if (!vlcExe) {
+      console.log("VLC not found on this machine");
+      return { ok: false, error: "VLC not installed" };
+    }
+
+    console.log("Launching VLC:", vlcExe, "with", videoArg);
+
+    // VLC can open both files *and* URLs
+    spawn(vlcExe, [videoArg], {
+      detached: true,
+      stdio: "ignore",
+    }).unref();
+
+    return { ok: true };
+  } catch (err) {
+    console.error("open-in-vlc error:", err);
+    return { ok: false, error: err.message };
+  }
+});
+
