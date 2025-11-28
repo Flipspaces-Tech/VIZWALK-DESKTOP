@@ -1,6 +1,7 @@
 node_modules/
 dist/
 app-build/
+s/
 
 s3/
 s4/
